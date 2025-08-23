@@ -1,0 +1,34 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+
+  .fileLoadContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .fileLoadInput {
+      border: none;
+      background: none;
+    }
+  }
+
+  .formButtonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .buttonNext {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.uploadImage {
+  align-self: start;
+}
+
+
+

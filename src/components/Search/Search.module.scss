@@ -1,0 +1,15 @@
+.searchContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .search {
+    flex: 1;
+  }
+
+  .searchButton {
+    border-radius: 0 10px 10px 0;
+  }
+}
+
+
