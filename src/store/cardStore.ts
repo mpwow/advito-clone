@@ -14,15 +14,16 @@ type CardStore = {
     setSearchQuery: (searchQuery: string) => void,
     filterByCategory: string,
     setFilterByCategory: (filterByCategory: string) => void,
+    isLoading: boolean,
+    error: string | null,
 }
 
 export const useCardStore = create<CardStore>((set) => ({
     cards: [],
-
     searchQuery: '',
-
     filterByCategory: '',
-
+    isLoading: false,
+    error: null,
     currentOpenedCard: null,
 
     setSearchQuery: (query) =>
@@ -32,32 +33,68 @@ export const useCardStore = create<CardStore>((set) => ({
         set({filterByCategory: filterByCategory}),
 
     getCards: async () => {
-        const cardsFromRemote: CardFromServer[] = await api.getCards();
-        set({cards: cardsFromRemote});
+        set({isLoading: true, error: null});
+        try {
+            const cardsFromRemote = await api.getCards<CardFromServer[]>();
+            set({cards: cardsFromRemote});
+        } catch (error) {
+            set({error: (error as Error).message || 'Unknown error'});
+        } finally {
+            set({isLoading: false});
+        }
     },
 
     getSingleCard: async (cardId: number) => {
-        const cardsFromRemote: CardFromServer = await api.getCard(cardId);
-        set({currentOpenedCard: cardsFromRemote});
+        set({isLoading: true, error: null});
+        try {
+            const cardsFromRemote: CardFromServer = await api.getCard(cardId);
+            set({currentOpenedCard: cardsFromRemote});
+        } catch (error) {
+            set({error: (error as Error).message || 'Unknown error'});
+        } finally {
+            set({isLoading: false});
+        }
     },
 
     addCard: async (card: Card) => {
-        const newCard: CardFromServer = await api.postCard(card)
-        set((state) => ({cards: [...state.cards, newCard]}));
+        set({isLoading: true, error: null});
+        try {
+            const newCard: CardFromServer = await api.postCard(card)
+            set((state) => ({cards: [...state.cards, newCard]}));
+        } catch (error) {
+            set({error: (error as Error).message || 'Unknown error'});
+        } finally {
+            set({isLoading: false});
+        }
     },
 
     editCard: async (card: CardFromServer) => {
-        const updatedCard: CardFromServer = await api.editCard(card.id, card);
-        set((state) => ({
-            cards: state.cards.map(card => card.id === updatedCard.id ? updatedCard : card),
-            currentOpenedCard: updatedCard,
-        }));
+        set({isLoading: true, error: null});
+        try {
+            const updatedCard: CardFromServer = await api.editCard(card.id, card);
+            set((state) => ({
+                cards: state.cards.map(card => card.id === updatedCard.id ? updatedCard : card),
+                currentOpenedCard: updatedCard,
+            }));
+        } catch (error) {
+            set({error: (error as Error).message || 'Unknown error'});
+        } finally {
+            set({isLoading: false});
+        }
+
     },
 
     deleteCard: async (cardId: number) => {
-        await api.deleteCard(cardId);
-        set((state) => ({
-            cards: state.cards.filter(card => card.id !== cardId),
-        }))
+        set({isLoading: true, error: null});
+        try {
+            await api.deleteCard(cardId);
+            set((state) => ({
+                cards: state.cards.filter(card => card.id !== cardId),
+            }))
+        } catch (error) {
+            set({error: (error as Error).message || 'Unknown error'});
+        } finally {
+            set({isLoading: false});
+        }
     },
 }))

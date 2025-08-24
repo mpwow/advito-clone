@@ -1,5 +1,6 @@
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 import {type Card, type CardFromServer} from "../types/card.ts";
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const API_URL = '/api';
 const BASE_ENDPOINT = '/items';
@@ -34,18 +35,18 @@ export class CardApiClient {
             const response = await fetch(url, options);
 
             if (!response.ok) {
-                throw new Error(`${response.status} : ${response.statusText}`);
+                console.log(`Error: ${response.status} ${response.statusText}`)
+                throw new Error(`Error: ${response.status} ${response.statusText}`);
             }
 
             // ручка DELETE не возвращает ничего - обрабатываем это здесь
-            if (options.method === 'DELETE') {
-                return
+            if (method !== 'DELETE') {
+                return await response.json();
             }
 
-            return response.json();
-
         } catch (error) {
-            throw new Error(`Request failed with ${error}`);
+            console.error('Request failed:', error);
+            throw error;
         }
     }
 
