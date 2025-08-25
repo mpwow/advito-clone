@@ -1,4 +1,3 @@
-import styles from './Search.module.scss';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {Button} from '@mui/material';
@@ -11,11 +10,12 @@ type SearchProps = {
 
 const Search = ({value, onChange}: SearchProps) => {
     return (
-        <Box className={styles.searchContainer}>
-
-            <TextField id="outlined-basic" label="Поиск по объявлениям" variant="outlined" className={styles.search} value={value}
-                       onChange={(e)=> onChange(e.target.value)} />
-            <Button variant="contained" className={styles.searchButton}><SearchIcon/>Найти</Button>
+        <Box sx={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+            <TextField id="outlined-basic" label="Поиск по объявлениям" variant="outlined"
+                       sx={{flexGrow: 1}}
+                       value={value}
+                       onChange={(e) => onChange(e.target.value)}/>
+            <Button variant="contained" sx={{borderRadius:'0 10px 10px 0'}}><SearchIcon/>Найти</Button>
         </Box>
     );
 }

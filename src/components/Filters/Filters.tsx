@@ -1,4 +1,3 @@
-import styles from "./Filters.module.scss";
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {useState} from "react";
@@ -13,7 +12,7 @@ const Filters = ({onChange, onDelete}: FiltersProps) => {
     const [filterIsSelected, setFilterIsSelected] = useState('');
 
     return (
-        <Box className={styles.filtersContainer}>
+        <Box sx={{display: "flex", alignItems: "center", gap: "15px"}}>
             {filterIsSelected === '' &&
             <>
                 <Chip key={'Недвижимость'} label={'Недвижимость'} variant="outlined" onClick={() => {

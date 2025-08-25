@@ -1,33 +1,50 @@
-import styles from "./Header.module.scss";
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import {Link, useLocation} from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import {Link} from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
 
-type HeaderProps = {
-    onClick: () => void;
-}
 
-const Header = ({ onClick }: HeaderProps) => {
+const Header = () => {
+    const location = useLocation();
+    const isCurrentPageMain = location.pathname === '/';
+
     return (
-        <Box className={styles.headerContainter}>
-            <Box className={styles.headerLogoContainter}>
-                <BusinessCenterIcon />
-                <Typography variant="h1">
-                    AdVito
-                </Typography>
-            </Box>
-            <Box className={styles.headerControlsContainer}>
-                <Button variant="outlined" className={styles.loginButton}>Войти</Button>
-                <Link to="/add-new-card">
-                <Button className={styles.addButton} onClick={onClick} variant="contained"><AddIcon/>
-                    Разместить объявление
-                </Button>
-                </Link>
-            </Box>
-        </Box>
+        <AppBar position="static">
+            <Container maxWidth="xl">
+                <Toolbar disableGutters sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Typography variant="h5">
+                        AdVito
+                    </Typography>
+                    {isCurrentPageMain &&
+                        <Link to="/add-new-card" style={{color: 'inherit', textDecoration: 'none'}}>
+                            <Button
+                                onClick={() => {
+                                }}
+                                variant="text"
+                                color="inherit"
+                            >
+                                <AddIcon/> Разместить объявление
+                            </Button>
+                        </Link>}
+                    {!isCurrentPageMain &&
+                        <Link to="/" style={{color: 'inherit', textDecoration: 'none'}}>
+                            <Button
+                                onClick={() => {
+                                }}
+                                variant="text"
+                                color="inherit"
+                            >
+                                <ArrowBackIcon/> Вернуться на главную
+                            </Button>
+                        </Link>
+                    }
+                </Toolbar>
+            </Container>
+        </AppBar>
     )
 }
 

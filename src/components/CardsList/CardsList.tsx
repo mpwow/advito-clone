@@ -3,6 +3,7 @@ import Filters from "../Filters/Filters.tsx";
 import Card from "../Card/Card.tsx";
 import {useCardStore} from "../../store/cardStore.ts";
 import {useEffect} from "react";
+import Box from '@mui/material/Box';
 
 const CardsList = () => {
     const {cards, getCards, searchQuery, setSearchQuery, setFilterByCategory, filterByCategory} = useCardStore();
@@ -18,13 +19,19 @@ const CardsList = () => {
     });
 
     return (
-        <div className="list-container">
-            <Search value={searchQuery} onChange={setSearchQuery} />
-            <Filters onChange={setFilterByCategory} onDelete={() => setFilterByCategory('')} />
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            padding: "30px",
+            margin: "0 auto",
+        }}>
+            <Search value={searchQuery} onChange={setSearchQuery}/>
+            <Filters onChange={setFilterByCategory} onDelete={() => setFilterByCategory('')}/>
             {filteredCards.map((card, index) => {
-                return <Card key={index} card={card}  />
+                return <Card key={index} card={card}/>
             })}
-        </div>
+        </Box>
     )
 }
 
