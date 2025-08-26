@@ -3,10 +3,10 @@ import Filters from "../Filters/Filters.tsx";
 import Card from "../Card/Card.tsx";
 import {useCardStore} from "../../store/cardStore.ts";
 import {useEffect} from "react";
-import {Box, Typography, Button} from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import {Box, Typography} from '@mui/material';
 import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
-import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import Error from "../Error/Error";
 
 const CardsList = () => {
     const {
@@ -43,37 +43,12 @@ const CardsList = () => {
             <Filters onChange={setFilterByCategory} onDelete={() => setFilterByCategory('')}/>
 
             {isLoading && !error && (
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    color: '#bdbdbd',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%',
-                    width: '100%',
-                }}>
-                    <CircularProgress/>
-                </Box>
+                <LoadingSpinner />
             )}
 
-            {error &&
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        color: '#bdbdbd',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100%',
-                        width: '100%',
-                    }}
-                >
-                    <WarningAmberRoundedIcon sx={{height: 110, width: 110, color: '#bdbdbd'}}/>
-                    <Typography variant={'h4'}>Ошибка при загрузке объявлений</Typography>
-                    <Button variant="outlined" onClick={() => {
-                        getCards()
-                    }}>Обновить страницу</Button>
-                </Box>}
+            {!isLoading && error && (
+                <Error errorMessage="Ошибка при загрузке объявлений" retryFn={()=>{getCards()}} />
+            )}
 
             {!isLoading && !error && filteredCards.length !== 0 && filteredCards.map((card, index) => {
                 return <Card key={index} card={card}/>
