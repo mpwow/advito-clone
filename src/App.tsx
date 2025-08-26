@@ -4,8 +4,6 @@ import AddCardPage from "./Pages/AddCard/AddCardPage.tsx";
 import SingleCardPage from "./Pages/SingleCard/SingleCard.tsx";
 import Header from "./components/Header/Header.tsx";
 
-
-
 function App() {
 
 

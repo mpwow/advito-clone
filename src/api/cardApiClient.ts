@@ -35,7 +35,9 @@ export class CardApiClient {
             const response = await fetch(url, options);
 
             if (!response.ok) {
-                console.log(`Error: ${response.status} ${response.statusText}`)
+                if (response.status === 404) {
+                    throw new Error('404');
+                }
                 throw new Error(`Error: ${response.status} ${response.statusText}`);
             }
 

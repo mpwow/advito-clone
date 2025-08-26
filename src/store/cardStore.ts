@@ -50,7 +50,11 @@ export const useCardStore = create<CardStore>((set) => ({
             const cardsFromRemote: CardFromServer = await api.getCard(cardId);
             set({currentOpenedCard: cardsFromRemote});
         } catch (error) {
-            set({error: (error as Error).message || 'Unknown error'});
+            if ((error as Error).message === '404') {
+                set({error: 'Объявление не найдено'});
+            } else {
+                set({error: (error as Error).message || 'Unknown error'});
+            }
         } finally {
             set({isLoading: false});
         }
